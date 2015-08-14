@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<script>
+
+			var x = ['a','b','c'];
+
+			x[1000] = ['e','f','g'];
+			x["someProp"] = "red";
+
+			x.forEach(function(value) {
+				console.log(value);
+			});
+
+			console.log(x.length);
+			console.dir(x);
+
+			var y = {};
+			y[1] = "Test";
+
+
+			var cars = [
+				{ make: "a", model: "b", year: "c" }
+			];
+
+			cars.push({
+				{ make: "e", model: "f", year: "g" }
+			});
+
+
+		</script>
+
+	</body>
+
+</html>

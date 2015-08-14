@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				Filter: <input ng-model="colourFilter">
+				New Colour: <input ng-model="newColour"> <button ng-click="addColour()">Add Colour</button>
+				<ul>
+					<li ng-repeat="colour in colours | filter:colourFilter | orderBy:'toString()'">{{$odd}} {{colour}}</li>
+				</ul>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope) {
+
+					$scope.colours = ["red","blue","green","white","saffron","black","brown"];
+
+					$scope.addColour = function() {
+						$scope.colours.push($scope.newColour);
+					};
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

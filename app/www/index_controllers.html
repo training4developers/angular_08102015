@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<style>
+			.ng-scope {
+				border:2px solid red;
+				margin:10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script>
+
+			console.log("proto demo - start");
+
+			var baseObj = {
+				id:2
+			};
+
+			var childObj1 = Object.create(baseObj);
+			var childObj2 = Object.create(baseObj);
+
+			console.log(childObj1.id);
+			console.log(childObj2.id);
+			baseObj.id = 4;
+			console.log(childObj1.id);
+			console.log(childObj2.id);
+
+			console.log("proto demo - end");
+
+		</script>
+
+		<div ng-app="MyApp">
+			Scope Id: {{$id}}<br>
+			Message: {{message}}
+			<div ng-controller="MyCtrl1">
+				Scope Id: {{$id}}<br>
+				Message: {{message}}
+				<div ng-controller="MyCtrl2">
+					Scope Id: {{$id}}<br>
+					Message: {{message}}
+				</div>
+			</div>
+			<div ng-controller="MyCtrl3">
+				Scope Id: {{$id}}<br>
+				Message: {{message}}
+				<div ng-controller="MyCtrl2">
+					Scope Id: {{$id}}<br>
+					Message: {{message}}
+				</div>
+			</div>
+			<div ng-controller="MyCtrl3">
+				Scope Id: {{$id}}<br>
+				Message: {{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl1", function($scope) {
+					$scope.message = "Hello from Morocco!";
+				})
+				.controller("MyCtrl2", function($scope) {
+				})
+				.controller("MyCtrl3", function($scope) {
+				})
+				.run(function($rootScope, $timeout) {
+					$rootScope.message = "Hello my fellow beings!";
+					$timeout(function() {
+						console.dir($rootScope);
+					},0);
+				});
+
+		</script>
+
+	</body>
+
+</html>

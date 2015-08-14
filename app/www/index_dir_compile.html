@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				<div cdc-dir><span>{{message}}</span></div>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("cdcDir", function($compile) {
+
+					// directive definition object
+					return {
+						compile: function(tElement, tAttr) {
+
+							var tpl = tElement.html();
+							tElement.html("");
+							console.log(tpl);
+
+							return function(scope, element, attrs) {
+
+								function transclude(fn) {
+
+									var linkingFn = $compile(tpl);
+									var domElements = linkingFn(scope);
+									fn(domElements);
+
+								}
+
+								transclude(function(clone) {
+									element.append(clone);
+								});
+								transclude(function(clone) {
+									element.append(clone);
+								});
+								transclude(function(clone) {
+									element.append(clone);
+								});
+							};
+
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+					$scope.colors = ["red","blue","green"];
+					$scope.message = "Hi Class!!!!!";
+				});
+
+		</script>
+
+	</body>
+
+</html>

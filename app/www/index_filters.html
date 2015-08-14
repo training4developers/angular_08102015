@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message | cdcUpperCase | cdcAppend:'!!!!!!!':3:"hi":'w'}}
+				{{whatever}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp.Constants", []);
+			angular.module("MyApp.Filters", []);
+			angular.module("MyApp.Controllers", ["MyApp.Constants","MyApp.Filters"]);
+			angular.module("MyApp", ["MyApp.Controllers"]);
+
+			angular.module("MyApp.Constants")
+				.constant("Message", "Hi Everyone")
+				.constant("Message2", "Hi Friends");
+
+			angular.module("MyApp.Filters")
+				.filter("cdcUpperCase", function() {
+
+					return function(value) {
+						return String(value).toUpperCase();
+					};
+
+				})
+				.filter("cdcAppend", function() {
+
+					return function(value) {
+						/*
+						var appendedValue = String(value);
+						for (var x=1; x<arguments.length; x++) {
+							appendedValue += arguments[x].toString();
+						}
+						return appendedValue;
+						*/
+
+						return $.makeArray(arguments).join("");
+					};
+
+				});
+
+			angular.module("MyApp.Controllers")
+				.controller("MyCtrl", function($scope, Message, Message2) {
+					$scope.message = Message;
+					$scope.whatever = Message2;
+				});
+
+		</script>
+
+	</body>
+
+</html>

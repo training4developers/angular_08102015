@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}<br>
+				<input ng-model="message" ng-model-options="{ updateOn: 'blur' }"><br>
+
+				<button ng-click="updateMessage()">Update Message</button>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope, $timeout) {
+
+					$scope.message = "Hi Class!";
+
+					$scope.updateMessage = function() {
+						console.log("button clicked");
+						$scope.message = "Updated Message";
+					};
+
+					setTimeout(function() {
+						console.log("timeout expired");
+
+						$scope.$apply(function() {
+							$scope.message = "timeout expired...";
+						});
+
+						//$scope.$digest();
+					},2000);
+
+					$scope.$watch(function() {
+						//console.log("digest loop ran");
+					});
+
+					var fn = $scope.$watch("message", function(newValue, oldValue) {
+						//var y;
+						//for (var x=0; x<1000000000; x++) {
+						//	y = x;
+						//}
+
+						console.log("message new value: " + newValue);
+						console.log("message old value: " + oldValue);
+					});
+
+
+
+					$scope.$watch("message", function(newValue, oldValue) {
+						//console.log("message new value: " + newValue);
+						//console.log("message old value: " + oldValue);
+					});
+
+					setTimeout(function() {
+								//fn();
+						//console.log($scope.$$watchers[0].exp.toString());
+					},10000);
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

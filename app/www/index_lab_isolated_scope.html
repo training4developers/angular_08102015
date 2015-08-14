@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+				Current Value: {{currentValue}}
+
+				<button simple-click="increment()">
+				    Increment
+				</button>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("simpleClick", function() {
+
+					return {
+						scope: {
+							clickFn: "&simpleClick"
+						},
+						link: function(scope, element, attrs) {
+							element.on("click", function(e) {
+
+							    //scope.$apply(function() {
+							        scope.clickFn(e);
+							    //});
+
+							});
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+
+					$scope.currentValue = 0;
+
+					$scope.increment = function() {
+					    $scope.currentValue++;
+					};
+				});
+
+		</script>
+
+	</body>
+
+</html>

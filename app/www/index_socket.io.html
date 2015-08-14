@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", ["ngSanitize"])
+				.controller("MyCtrl", function($scope) {
+
+					var socket = io.connect("http://localhost:8080", {
+						transports: ["websocket"]
+					});
+
+					socket.emit("log", {
+						messageType: "info",
+						message: "This is a test message!"
+					});
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

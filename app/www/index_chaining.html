@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($q, $timeout) {
+
+					var
+						youngLady = $q.defer(),
+						youngMan = youngLady.promise;
+
+					youngMan.then(function(result) {
+						console.log("she said yes!");
+						console.dir(result);
+
+						var planBachelorParty = $q.defer();
+
+						$timeout(function() {
+							planBachelorParty.reject();
+						}, 3000);
+
+
+						return planBachelorParty.promise;
+						//throw Error("she was lying...");
+					}, function(result) {
+						console.log("she said no!");
+						console.dir(result);
+					}).then(function() {
+						console.log("plan bachelor party...");
+					}, function() {
+						console.log("not going to plan bachelor party...");
+					});
+
+					$timeout(function() {
+
+						console.log("young lady resolved!");
+						youngLady.resolve({
+							reason: "I just love him!!!!"
+						});
+
+					}, 3000);
+					console.log("young man waiting for an answer...");
+
+
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				Color Filter: <input ng-model="chairColorFilter">
+				<ul>
+					<li ng-repeat="chair in chairs | filter:{'color':chairColorFilter} | orderBy:'color'">{{$odd}} {{chair.color}} {{chair.withArms}} {{chair.withWheels}}</li>
+				</ul>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope) {
+
+					$scope.chairs = [
+						{ color: "red", withArms: false, withWheels: true },
+						{ color: "blue", withArms: true, withWheels: false },
+						{ color: "black", withArms: true, withWheels: true }
+
+					];
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

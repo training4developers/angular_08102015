@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($q, $timeout, $interval) {
+
+					var d = $q.defer();
+
+					d.promise.then(function() {
+						console.log("all done");
+					}, function() {
+						console.log("it failed");
+					}, function(result) {
+						console.log("notified of update...");
+						console.log(result);
+					});
+
+					var i = $interval(function() {
+						d.notify("still working on it...");
+						console.log("interval fired");
+					}, 100);
+
+					console.dir(i);
+
+					$timeout(function() {
+						$interval.cancel(i);
+						d.resolve();
+					},1000);
+
+
+
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

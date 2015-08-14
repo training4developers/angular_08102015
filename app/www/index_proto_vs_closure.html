@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<script>
+
+			var b = {
+				x : 2
+			};
+
+			var c = Object.create(b);
+
+			c.myFunc = function() {
+				console.log(this.x);
+			};
+
+			c.myFunc();
+
+
+			function outer() {
+				var x = 2;
+
+				return function() {
+					console.log(x);
+				};
+			}
+
+			var myFunc = outer();
+			myFunc();
+
+		</script>
+
+	</body>
+
+</html>

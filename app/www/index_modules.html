@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp.Constants", []);
+			angular.module("MyApp.Controllers", ["MyApp.Constants"]);
+			angular.module("MyApp", ["MyApp.Controllers"]);
+
+			angular.module("MyApp.Constants")
+				.constant("Message", "Hi Everyone!")
+				.config(function() {
+					console.log("MyApp.Constants config");
+				})
+				.run(function() {
+					console.log("MyApp.Constants run");
+				});
+
+			angular.module("MyApp.Controllers")
+				.controller("MyCtrl", function($scope, Message) {
+					$scope.message = Message;
+					console.log("MyCtrl Message");
+				})
+				.config(function() {
+					console.log("MyApp.Controllers config");
+				})
+				.run(function() {
+					console.log("MyApp.Controllers run");
+				});
+
+			angular.module("MyApp")
+				.config(function() {
+					console.log("MyApp config");
+				})
+				.run(function() {
+					console.log("MyApp run");
+				});
+
+		</script>
+
+	</body>
+
+</html>

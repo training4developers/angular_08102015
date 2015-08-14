@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				<div cdc-dir>Hi Class!</div>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("cdcDir", function() {
+
+					// directive definition object
+					return {
+						templateUrl: "tpl/color-list.html",
+						link: function(scope, element, attrs) {
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+					$scope.colors = ["red","blue","green"];
+				});
+
+		</script>
+
+	</body>
+
+</html>

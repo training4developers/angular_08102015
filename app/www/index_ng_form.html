@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+
+		<style>
+
+			/*
+			input.ng-invalid.ng-dirty, input.ng-invalid.ng-touched {
+				border: 3px solid red;
+			}
+			*/
+
+			.red-box {
+				border: 3px solid red;
+			}
+
+			form > div {
+				padding:5px;
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<form novalidate name="contactForm" ng-submit="submitContactForm()">
+
+				<div>
+					<label for="first-name">First Name:</label>
+					<input type="text" name="firstName" id="first-name"
+						required ng-model="contact.firstName"
+						ng-class="{'red-box': contactForm.firstName.$invalid }">
+				</div>
+
+				<div>
+					<label for="last-name">Last Name:</label>
+					<input type="text" name="lastName" id="last-name"
+						required ng-model="contact.lastName">
+				</div>
+
+				<div>
+					<label for="age">Age:</label>
+					<input type="number" name="age" id="age"
+						required ng-model="contact.age">
+				</div>
+
+				<div>
+					<label for="us-citizen">US Citizen:</label>
+					<input type="checkbox" name="usCitizen" id="us-citizen"
+						required ng-model="contact.usCitizen">
+				</div>
+
+				<div>
+					<label for="gender">Gender:</label>
+					<input type="radio" name="gender" id="genderFemale" value="female"
+						ng-model="contact.gender"> <label for="genderFemale">Female</label>
+					<input type="radio" name="gender" id="genderMale" value="male"
+						ng-model="contact.gender"> <label for="genderMale">Male</label>
+				</div>
+
+				<div>
+					<label for="residence">State Residence</label>
+					<select name="residence" id="residence" ng-model="contact.residence"
+							ng-options="state.code as state.name group by state.country for state in states | orderBy:'country'">
+						<option value="">Select One</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="comments">Comments:</label>
+					<textarea name="comments" id="comments" rows="5" cols="40"
+						ng-model="contact.comments" style="vertical-align:top;"></textarea>
+				</div>
+
+				<button ng-disabled="contactForm.$invalid"
+					ng-click="submitContactForm()">Submit</button>
+			</form>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.run(function($rootScope) {
+
+					$rootScope.states = [
+						{ name: "Georgia", code: "GA", country: "United States of America" },
+						{ name: "Virginia", code: "VA", country: "United States of America" },
+						{ name: "New York", code: "NY", country: "United States of America" },
+						{ name: "Alabama", code: "AL", country: "United States of America" },
+						{ name: "Florida", code: "FL", country: "United States of America" },
+						{ name: "Andhra Pradesh", code: "AP", country: "Republic of India" },
+						{ name: "Uttar Pradesh", code: "UP", country: "Republic of India" },
+						{ name: "Casablanca", code: "CB", country: "Kingdom of Morocco" }
+					];
+
+					$rootScope.submitContactForm = function() {
+						console.dir($rootScope.contact);
+						console.dir($rootScope.contactForm);
+					};
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+				<div cdc-dir msg="message"
+					one-way="{{message | uppercase}}"
+					fn="doSomething()"></div>
+				{{message2}}
+				<div cdc-dir msg="message2"></div>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("cdcDir", function($compile) {
+
+					// directive definition object
+					return {
+						scope: {
+							msg: "=",
+							oneWay: "@oneWay",
+							clickMe: "&fn"
+						},
+						template: "<input ng-model='msg'>{{oneWay}}" +
+							"<button ng-click='clickMe()'>Click Me!</button>",
+						link: function(scope, element, attrs) {
+							console.dir(scope);
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+					$scope.colors = ["red","blue","green"];
+					$scope.message = "Hi Class!!!!!";
+					$scope.message2 = "Who is hungry?";
+
+					$scope.doSomething = function() {
+						console.log("did it!");
+					};
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

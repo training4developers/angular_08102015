@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+				<select ng-model="selectedDisease" ng-options="disease for disease in diseases">
+					<option value="">Select One...</option>
+				</select>
+
+				<div ng-switch on="selectedDisease">
+					<div ng-switch-when="Denge Fever">
+						Nervous, High Temps
+					</div>
+					<div ng-switch-when="Polio">
+						Paralysis
+					</div>
+					<div ng-switch-when="Ebola">
+						Hemoraging
+					</div>
+					<div ng-switch-when="Small Pox">
+						Pustules
+					</div>
+					<div ng-switch-default>
+						Select a Disease
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope) {
+
+					$scope.diseases = ["Denge Fever","Polio","Ebola","Small Pox"];
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

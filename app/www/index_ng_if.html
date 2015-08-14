@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				<input ng-model="showMe" type="checkbox" ng-change="showMeChange()">Show Me!
+				<div ng-if="showMe">{{message}}</div>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope) {
+					$scope.message = "Show my message!";
+					$scope.showMeChange = function() {
+						console.log("changed");
+						console.dir($scope);
+					};
+				});
+
+		</script>
+
+	</body>
+
+</html>

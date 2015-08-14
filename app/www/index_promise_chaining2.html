@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($q, $timeout) {
+
+					var
+						d1 = $q.defer(),
+						d2 = $q.defer(),
+						d3 = $q.defer(),
+						d4 = $q.defer();
+
+					d1.promise.then(function(result) {
+						console.log("d1 resolved");
+						return d2.promise;
+					}).then(function() {
+						console.log("d2 resolved");
+						return d3.promise;
+					}, function() {
+						console.log("d2 rejected");
+						//return $q.reject("d2 rejected, the world is over...");
+					}).then(function() {
+						console.log("d3 resolved");
+						return d4.promise;
+					}).then(function() {
+						console.log("d4 resolved");
+					}).catch(function() {
+						console.log("an error occured");
+					}).finally(function() {
+						console.log("all done...")
+					});
+
+					$timeout(function() {
+						d1.resolve("data");
+					},8000);
+
+					$timeout(function() {
+						d2.resolve();
+					},6000);
+
+					$timeout(function() {
+						d3.resolve();
+					},4000);
+
+					$timeout(function() {
+						d4.resolve();
+					},2000);
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

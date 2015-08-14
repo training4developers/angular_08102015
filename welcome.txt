@@ -1,0 +1,11 @@
+Welcome to Angular.js!
+
+Instructor: Eric Greene
+
+Schedule:
+  Monday-Friday: 8:30am to 4:30pm
+  Breaks:
+	  Morning: 10:15am - 10:30am
+	  Afternoon: 2:45pm - 3pm
+
+Class Introductions...

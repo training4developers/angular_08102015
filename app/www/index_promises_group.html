@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($q, $timeout) {
+
+					var
+						d1 = $q.defer(),
+						d2 = $q.defer(),
+						d3 = $q.defer(),
+						d4 = $q.defer();
+
+					var p = $q.all([d1.promise, d2.promise,
+						d3.promise]);
+
+					p.then(function() {
+							console.log("first three are done done!");
+						}, function() {
+							console.log("it failed!");
+						});
+
+					$q.all([p, d4.promise]).then(function() {
+						console.log("really done!");
+					});
+
+					$timeout(function() {
+						console.log("d1 resolved");
+						d1.resolve();
+					},2000);
+
+					$timeout(function() {
+						console.log("d2 resolved");
+						d2.reject();
+					},4000);
+
+					$timeout(function() {
+						console.log("d3 resolved");
+						d3.resolve();
+					},6000);
+
+					$timeout(function() {
+						console.log("d4 resolved");
+						d4.resolve();
+					},8000);
+
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

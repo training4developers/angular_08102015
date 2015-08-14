@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<style>
+			div { border: 2px solid blue; margin:10px; }
+		</style>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			RootScope
+			<div ng-controller="MyCtrl1">
+				{{message}}
+			</div>
+			<div ng-controller="MyCtrl2">
+				{{message}}
+				<div ng-controller="MyCtrl3">
+					{{message}}
+				</div>
+			</div>
+			<div ng-controller="MyCtrl4">
+				{{message}}
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl1", function($scope) {
+					$scope.message = "Ctrl 1";
+				})
+				.controller("MyCtrl2", function($scope) {
+					$scope.message = "Ctrl 2";
+				})
+				.controller("MyCtrl3", function($scope) {
+					$scope.message = "Ctrl 3";
+
+					$scope.$on("alert", function() {
+
+						console.dir(arguments);
+
+						$scope.$emit("ack", {
+							message: "received"
+						});
+					});
+
+				})
+				.controller("MyCtrl4", function($scope) {
+					$scope.message = "Ctrl 4";
+				})
+				.run(function($rootScope, $timeout) {
+
+					$timeout(function() {
+
+						$rootScope.$on("ack", function() {
+							console.log(arguments);
+						});
+
+						$rootScope.$broadcast("alert", {
+							level: "Red Alert",
+							msg: "Ebola in Texas"
+						});
+
+					},0);
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

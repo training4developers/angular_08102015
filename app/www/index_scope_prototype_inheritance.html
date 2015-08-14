@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				<div>
+					<label for="to-addresses">To:</label>
+					<input id="to-addresses" ng-model="mail.toAddresses">
+					Show CCs: <input ng-model="mail.showCCs" type="checkbox">
+				</div>
+				<div ng-if="mail.showCCs">
+					<label for="cc-addresses">CC:</label>
+					<input id="cc-addresses" ng-model="mail.ccAddresses">
+				</div>
+				<div><textarea ng-model="mail.message" rows="5" cols="40"></textarea></div>
+				<button ng-click="sendEmail()">Send</button>
+			</div>
+		</div>
+
+		<script>
+
+			function sendEmail($scope) {
+
+				return function() {
+
+				console.log("Email sent to: ",
+					$scope.mail.toAddresses, $scope.mail.ccAddresses);
+				};
+			}
+
+			angular.module("MyApp", [])
+				.controller("MyCtrl", function($scope) {
+
+					$scope.mail = {};
+
+					$scope.sendEmail = sendEmail($scope);
+
+				});
+
+		</script>
+
+	</body>
+
+</html>
