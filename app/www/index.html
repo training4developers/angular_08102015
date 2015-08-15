@@ -14,59 +14,114 @@
 	<body>
 
 		<div ng-app="MyApp">
-			<div ng-controller="MyCtrl">
-				<div cdc-repeat="5" cdc-bold>{{message}}</div>
-			</div>
+			<div ng-view></div>
 		</div>
 
 		<script>
 
-			angular.module("MyApp", [])
-				.directive("cdcBold", function() {
+			angular.module("MyApp", ["ngRoute"])
+				.factory("Widgets", function($http) {
 
 					return {
-						priority:5,
-						link:function(scope, element) {
-							console.log("firstDir linking function executed");
-							element.css("font-weight","bold");
+						getAll: function() {
+							return $http.get("/api/widgets");
+						},
+						get: function(widgetId) {
+							return $http.get("/api/widgets/" + encodeURIComponent(widgetId));
+						},
+						insert: function(widget) {
+							return $http.post("/api/widgets", widget);
+						},
+						update: function(widget) {
+							return $http.put("/api/widgets/" + encodeURIComponent(widget._id), widget);
+						},
+						delete: function(widgetId) {
+							return $http.delete("/api/widgets/" + encodeURIComponent(widgetId));
 						}
 					}
 
 				})
-				.directive("cdcRepeat", function($compile) {
+				.config(function($routeProvider, $locationProvider) {
 
-					return {
-						priority:10,
-						terminal: true,
-						compile: function(tElement, tAttrs) {
+					$locationProvider.html5Mode(true);
 
-							var tpl = tElement[0].outerHTML;
-							var pri = this.priority;
+					$routeProvider
+						.when("/", {
+							controller: function($scope, Widgets, $location) {
 
-							return function(scope, element, attrs) {
+								Widgets.getAll().then(function(result) {
+									$scope.widgets = result.data;
+								});
 
-								console.log("secondDir linking function executed");
+								$scope.createWidget = function() {
+									$location.path("/widget//edit");
+								};
 
-								element.empty();
-								scope.message = "Hi CDC!";
+							},
+							templateUrl: "tpl/widget-list.html"
+						})
+						.when("/widget/:widgetId", {
+							controller: function($scope, Widgets, $routeParams, $location) {
 
-								for (var x=0; x<parseInt(attrs.cdcRepeat,10); x++) {
-									var linkingFn = $compile(tpl, null, pri);
-									var domElements = linkingFn(scope);
-									element.append(domElements);
+								Widgets.get($routeParams.widgetId).then(function(result) {
+									$scope.widget = result.data;
+								});
+
+								$scope.editWidget = function() {
+									console.log("/widget/" + encodeURIComponent($routeParams.widgetId) + "/edit");
+									$location.path("/widget/" + encodeURIComponent($routeParams.widgetId) + "/edit");
+								};
+
+								$scope.returnToList = function() {
+									$location.path("/");
 								}
 
+							},
+							templateUrl: "tpl/widget-view.html"
+						})
+						.when("/widget/:widgetId?/edit", {
+							controller: function($scope, Widgets, $routeParams, $location) {
 
-							}
+								if ($routeParams.widgetId) {
+									Widgets.get($routeParams.widgetId).then(function(result) {
+										$scope.widget = result.data;
+									});
+								} else {
+									$scope.widget = {};
+								}
 
+								$scope.saveWidget = function() {
 
+									if ($scope.widget._id) {
+										Widgets.update($scope.widget).then(function() {
+											$location.path("/widget/" + encodeURIComponent($routeParams.widgetId));
+										});
+									} else {
+										Widgets.insert($scope.widget).then(function(result) {
+											$location.path("/widget/" + encodeURIComponent(result.data._id));
+										});
+									}
+								};
 
-						}
+								$scope.deleteWidget = function() {
 
-					}
+									Widgets.delete($routeParams.widgetId).then(function() {
+										$location.path("/");
+									});
 
-				})
-				.controller("MyCtrl", function($scope) {
+								};
+
+								$scope.returnToList = function() {
+									$location.path("/");
+								}
+
+							},
+							templateUrl: "tpl/widget-edit.html"
+						})
+						.otherwise({
+							redirectTo: "/"
+						});
+
 				});
 
 		</script>
