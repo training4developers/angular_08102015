@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.provider("MyLogger", function() {
+
+					var prefix = "";
+
+					return {
+						setPrefix: function(newPrefix) {
+							prefix = newPrefix;
+						},
+						// factory
+						$get: function() {
+
+							return {
+								log: function(msg) {
+									console.log(prefix + msg);
+								}
+							};
+
+						}
+					};
+
+				})
+				.config(function(MyLoggerProvider) {
+					MyLoggerProvider.setPrefix("MyApp> ");
+				})
+				.config(function($provide) {
+
+					$provide.decorator("$log", function($delegate) {
+
+						var originalLog  = $delegate.log;
+						$delegate.log = function(msg) {
+							originalLog("MyApp> " + msg);
+						}
+						return $delegate;
+					})
+
+				})
+				// not useful
+				/*
+				.config(function($provide) {
+					$provide.decorator("$log", function($delegate) {
+						return null;
+					})
+				})
+				*/
+				.controller("MyCtrl", function($scope, $log) {
+					$log.log("Angular.js is fun!");
+					$log.log("Angular.js is cool!");
+					$log.log("Angular.js is easy!");
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

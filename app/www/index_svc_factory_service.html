@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.factory("Widgets", function() {
+					console.log("a");
+					return {
+						getData: function() {
+							return "data";
+						}
+					};
+				})
+				.service("Widgets2", function() {
+					console.log("b");
+					this.getData = function() {
+						return "data";
+					}
+				})
+				.controller("MyCtrl", function($scope, Widgets, $document, $tabModal) {
+					console.log(Widgets.getData());
+				});
+
+		</script>
+
+	</body>
+
+</html>

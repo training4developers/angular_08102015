@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.factory("SocketLogger", function() {
+
+					var socket = io.connect("http://localhost:8080", {
+						transports: ["websocket"]
+					});
+
+					return {
+						error: function(msg) {
+							socket.emit("log", {
+								messageType: "error",
+								message: msg
+							});
+						},
+						info: function(msg) {
+							socket.emit("log", {
+								messageType: "info",
+								message: msg
+							});
+						}
+
+					}
+
+				})
+				.config(function($provide) {
+
+					$provide.decorator("$log", function($delegate, SocketLogger) {
+
+						var originalLog = $delegate.log;
+
+						$delegate.log = function(msg) {
+							SocketLogger.info(msg);
+							originalLog(msg);
+						}
+
+						return $delegate;
+
+					});
+
+				})
+				.controller("MyCtrl", function($scope, $log) {
+
+					$log.log("Angular.js is fun!");
+					$log.log("Angular.js is cool!");
+					$log.log("Angular.js is easy!");
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

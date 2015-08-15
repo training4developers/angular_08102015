@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+				Message: <input ng-model="message">
+
+				<div daniel-dir id="myDiv" class="bob" lang="en" msg="{{message}}"></div>
+
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("danielDir", function() {
+
+					return {
+						link: function(scope, element, attrs) {
+
+							console.dir(attrs);
+
+							attrs.$addClass("john");
+							attrs.$removeClass("bob");
+
+							attrs.$observe("msg", function(value) {
+								console.log(value);
+							});
+
+
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+					$scope.message = "Hello!";
+				});
+
+		</script>
+
+	</body>
+
+</html>

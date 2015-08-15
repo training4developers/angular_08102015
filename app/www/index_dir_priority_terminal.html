@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+				<div cdc-repeat="5" first-dir>
+					{{message}}
+				</div>
+
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", ["ngSanitize"])
+				.directive("firstDir", function() {
+
+					return {
+						priority:10,
+						controller: function() {
+							console.log("first dir");
+						},
+						link: function(scope, element) {
+							element.css("font-weight","bold");
+						}
+					}
+
+				})
+				.directive("cdcRepeat", function($compile) {
+
+					return {
+						priority:20,
+						terminal:true,
+						controller: function() {
+							console.log("second dir");
+						},
+						compile: function(tElement, tAttrs){
+
+							var tpl = tElement[0].outerHTML;
+							var pri = this.priority;
+
+							return function(scope, element, attrs) {
+
+								element.empty();
+								scope.message = "Danielson";
+
+								for (var x=0; x<parseInt(attrs.cdcRepeat); x++) {
+									var linkingFn = $compile(tpl, null, pri);
+									var domElements = linkingFn(scope);
+									element.append(domElements);
+								}
+
+							}
+
+						}
+					}
+
+				})
+				.controller("MyCtrl", function($scope) {
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<script src="libs/angular-sanitize/angular-sanitize.js"></script>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+				<div simple-bold simple-repeat="5">
+					{{message}}
+				</div>
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("simpleBold", function() {
+					return {
+				    priority:500,
+				    link: function(scope, element) {
+			        console.log("simpleBold Link");
+			        element.css("font-weight", "bold");
+				    }
+					};
+				})
+				.directive("simpleRepeat", function($compile) {
+					return {
+						priority: 100,
+						terminal: true,
+						compile: function(tElement, tAttrs) {
+
+							var
+								that = this,
+								count = parseInt(tAttrs.simpleRepeat),
+								tpl = tElement[0].outerHTML,
+								parentElement = tElement.parent();
+
+							parentElement.empty();
+
+							return function(scope) {
+
+								for (var x=0; x<count; x++) {
+									var linkingFn = $compile(tpl, null, that.priority);
+									var domElement = linkingFn(scope.$new());
+									parentElement.append(domElement);
+								}
+
+
+							};
+						}
+
+					};
+				})
+				.controller("MyCtrl", function($scope) {
+					$scope.message = "Hello!";
+				});
+
+		</script>
+
+	</body>
+
+</html>
