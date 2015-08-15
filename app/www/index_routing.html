@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Class</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/libs/jquery/dist/jquery.js"></script>
+		<script src="/libs/angular/angular.js"></script>
+		<script src="/libs/angular-route/angular-route.js"></script>
+		<base href="/">
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-view></div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", ["ngRoute"])
+				.config(function($routeProvider, $locationProvider) {
+
+					$locationProvider.html5Mode(true);
+
+					$routeProvider
+						.when("/", {
+							controller: function() {
+
+							},
+							templateUrl: "tpl/home.html"
+						})
+						.when("/contact/:contactId", {
+							controller: function($scope, $routeParams) {
+								$scope.message = "Contact Id: " + $routeParams.contactId;
+							},
+							templateUrl: "tpl/contact.html"
+						})
+						.when("/about", {
+							controller: function() {
+
+							},
+							templateUrl: "tpl/about.html"
+						})
+						.otherwise({
+							redirectTo: "/"
+						});
+
+
+				})
+				.controller("MyCtrl", function($scope) {
+
+				});
+
+		</script>
+
+	</body>
+
+</html>
